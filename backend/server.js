@@ -16,12 +16,26 @@ const port = process.env.PORT;
 
 const FRONTEND_URL = process.env.FRONTEND_URL || "https://split-mate-five.vercel.app";
 
-app.use(
-  cors({
-    origin: [FRONTEND_URL, "http://localhost:5173"],
-    credentials: true,
-  })
-);
+// List of allowed origins (production + local dev)
+const allowedOrigins = [FRONTEND_URL, "http://localhost:5173"];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight requests for all routes
+app.options("*", cors(corsOptions));
 
 app.use(cookieParser());
 app.use(express.json());
