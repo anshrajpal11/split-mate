@@ -458,7 +458,9 @@ export default function GroupDetails({ group }) {
                     variant="secondary"
                     onClick={async () => {
                       try {
-                        const res = await api.post(`/api/group/settlements/settle/${s._id}`);
+                        const res = await api.post(
+                          `/api/group/settlements/settle/${s._id}`
+                        );
                         if (res.data?.success) {
                           setSettlements((prev) =>
                             prev.map((it) =>

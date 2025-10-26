@@ -19,26 +19,25 @@ import toast from "react-hot-toast";
 function Signup() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
-  const [username,setUsername] = useState("");
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit =async (e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-     const res = await api.post("/api/user/signup", {
+    const res = await api.post("/api/user/signup", {
       username,
       email,
       password,
     });
-    if(res.data.success){
-       toast.success("Registered successfully!");
-      navigate("/login")
-    }
-    else{
-       toast.error("check all fields  ");
+    if (res.data.success) {
+      toast.success("Registered successfully!");
+      navigate("/login");
+    } else {
+      toast.error("check all fields  ");
       console.log("check all field");
     }
-  }
+  };
 
   return (
     <main className="min-h-[100dvh] grid md:grid-cols-2 bg-background text-foreground">
@@ -137,7 +136,7 @@ function Signup() {
                   autoComplete="username"
                   placeholder="yourusername"
                   className="bg-background"
-                  onChange={(e)=>setUsername(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>
@@ -151,7 +150,7 @@ function Signup() {
                   autoComplete="email"
                   placeholder="you@example.com"
                   className="bg-background"
-                  onChange={(e)=>setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -176,7 +175,7 @@ function Signup() {
                   autoComplete="current-password"
                   placeholder="••••••••"
                   className="bg-background"
-                  onChange={(e)=>setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
@@ -191,7 +190,6 @@ function Signup() {
                   />
                   Remember me
                 </label>
-                
               </div>
 
               <Button type="submit" className="w-full">

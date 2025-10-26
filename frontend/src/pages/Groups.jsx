@@ -21,7 +21,7 @@ import {
   DialogTitle,
   DialogFooter,
   DialogTrigger,
-  DialogOverlay
+  DialogOverlay,
 } from "@/components/ui/dialog";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -165,8 +165,9 @@ export default function Groups() {
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-between">
-                <Link to={`/group/${g._id}`} variant="secondary">View details</Link>
-
+                <Link to={`/group/${g._id}`} variant="secondary">
+                  View details
+                </Link>
               </CardFooter>
             </Card>
           ))}
