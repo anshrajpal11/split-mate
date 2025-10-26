@@ -14,9 +14,11 @@ dotenv.config();
 
 const port = process.env.PORT;
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://split-mate-five.vercel.app";
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [FRONTEND_URL, "http://localhost:5173"],
     credentials: true,
   })
 );
@@ -31,7 +33,7 @@ connectDb();
 const httpServer = createServer(app);
 const io = new Server(httpServer,{
    cors: {
-    origin: "http://localhost:5173",
+    origin: [FRONTEND_URL, "http://localhost:5173"],
     credentials: true,
   },
 })

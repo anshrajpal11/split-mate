@@ -24,7 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Mail, User, Plus, Users, Receipt, Scale } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import axios from "axios";
+import api from "@/lib/api";
 import toast from "react-hot-toast";
 import {
   Table,
@@ -64,9 +64,7 @@ export default function GroupDetails({ group }) {
     async function getMembers() {
       try {
         setLoadingMembers(true);
-        const res = await axios.get(
-          `http://localhost:3000/api/group/members/${groupId}`
-        );
+        const res = await api.get(`/api/group/members/${groupId}`);
         setMembers(res.data.members || []);
       } catch (err) {
         toast.error("Failed to fetch members");
@@ -80,10 +78,7 @@ export default function GroupDetails({ group }) {
   useEffect(() => {
     async function getExpenses() {
       try {
-        const res = await axios.get(
-          `http://localhost:3000/api/group/expense/get/${groupId}`,
-          { withCredentials: true }
-        );
+        const res = await api.get(`/api/group/expense/get/${groupId}`);
         setExpenses(res.data?.expenses || []);
       } catch (err) {
         toast.error("Failed to fetch expenses");
@@ -95,10 +90,7 @@ export default function GroupDetails({ group }) {
   useEffect(() => {
     async function fetchSettlements() {
       try {
-        const res = await axios.get(
-          `http://localhost:3000/api/group/settlements/get/${groupId}`,
-          { withCredentials: true }
-        );
+        const res = await api.get(`/api/group/settlements/get/${groupId}`);
         setSettlements(res.data?.settlements || []);
       } catch (err) {
         // silent
@@ -109,11 +101,9 @@ export default function GroupDetails({ group }) {
 
   async function handleAddMember() {
     try {
-      const res = await axios.post(
-        `http://localhost:3000/api/group/add/${groupId}`,
-        { username: newMemberName },
-        { withCredentials: true }
-      );
+      const res = await api.post(`/api/group/add/${groupId}`, {
+        username: newMemberName,
+      });
       if (res.data?.success) {
         toast.success(res.data.message || "Member added successfully");
         setNewMemberName("");
@@ -129,11 +119,12 @@ export default function GroupDetails({ group }) {
 
   async function handleAddExpense() {
     try {
-      const res = await axios.post(
-        `http://localhost:3000/api/group/expense/add/${groupId}`,
-        { expenseName, amount: Number(expenseAmount), expenseDate, paidBy },
-        { withCredentials: true }
-      );
+      const res = await api.post(`/api/group/expense/add/${groupId}`, {
+        expenseName,
+        amount: Number(expenseAmount),
+        expenseDate,
+        paidBy,
+      });
       if (res.data?.success) {
         toast.success(res.data.message || "Expense added successfully");
         setExpenseName("");
@@ -142,10 +133,7 @@ export default function GroupDetails({ group }) {
         setPaidBy("");
         // refresh expenses
         try {
-          const getRes = await axios.get(
-            `http://localhost:3000/api/group/expense/get/${groupId}`,
-            { withCredentials: true }
-          );
+          const getRes = await api.get(`/api/group/expense/get/${groupId}`);
           setExpenses(getRes.data?.expenses || []);
         } catch {}
       } else {
@@ -158,11 +146,7 @@ export default function GroupDetails({ group }) {
 
   async function handleRecomputeSettlements() {
     try {
-      const res = await axios.post(
-        `http://localhost:3000/api/group/settlements/compute/${groupId}`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await api.post(`/api/group/settlements/compute/${groupId}`);
       if (res.data?.success) {
         setSettlements(res.data?.settlements || []);
         toast.success("Settlements recomputed");
@@ -474,11 +458,7 @@ export default function GroupDetails({ group }) {
                     variant="secondary"
                     onClick={async () => {
                       try {
-                        const res = await axios.post(
-                          `http://localhost:3000/api/group/settlements/settle/${s._id}`,
-                          {},
-                          { withCredentials: true }
-                        );
+                        const res = await api.post(`/api/group/settlements/settle/${s._id}`);
                         if (res.data?.success) {
                           setSettlements((prev) =>
                             prev.map((it) =>

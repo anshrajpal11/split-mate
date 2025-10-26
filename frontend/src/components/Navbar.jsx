@@ -4,18 +4,14 @@ import { Link } from "react-router-dom";
 import { UserContext } from "@/context/UserContext";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline"; // logout icon
 
-import axios from "axios";
+import api from "@/lib/api";
 
 const Navbar = () => {
   const { isLogin, user, setUser, setIsLogin } = useContext(UserContext);
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        "http://localhost:3000/api/user/logout",
-        {},
-        { withCredentials: true }
-      );
+      await api.post("/api/user/logout");
       setUser(null);
       setIsLogin(false);
     } catch (err) {

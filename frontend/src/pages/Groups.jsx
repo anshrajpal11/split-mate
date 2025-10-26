@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { io } from "socket.io-client";
+import api, { BASE } from "@/lib/api";
 
 import {
   Card,
@@ -38,7 +39,7 @@ export default function Groups() {
   const [memberName, setMemberName] = useState("");
 
   useEffect(() => {
-    const socket = io("http://localhost:3000", {
+    const socket = io(BASE, {
       withCredentials: true,
     });
 
@@ -55,9 +56,7 @@ export default function Groups() {
   useEffect(() => {
     const getGroups = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/group/get", {
-          withCredentials: true,
-        });
+        const res = await api.get("/api/group/get");
         if (res.data.success) setGroups(res.data.groups);
       } catch (err) {
         console.error(err);
@@ -69,11 +68,7 @@ export default function Groups() {
 
   const handleCreate = async () => {
     if (!groupName.trim()) return;
-    const res = await axios.post(
-      "http://localhost:3000/api/group/create",
-      { groupName },
-      { withCredentials: true }
-    );
+    const res = await api.post("/api/group/create", { groupName });
     if (res.data.success) {
       setGroups((prev) => [res.data.group, ...prev]);
       setOpenCreate(false);

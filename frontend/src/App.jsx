@@ -7,7 +7,7 @@ import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import { useContext } from "react";
 import { UserContext } from "./context/UserContext";
-import axios from "axios";
+import api from "@/lib/api";
 import { Group } from "lucide-react";
 import Groups from "./pages/Groups";
 import Dashboard from "./pages/Dashboard";
@@ -17,8 +17,8 @@ const App = () => {
   const { setUser, setIsLogin } = useContext(UserContext);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/user/me", { withCredentials: true })
+    api
+      .get("/api/user/me")
       .then((res) => {
         if (res.data.success) {
           setUser(res.data.user);

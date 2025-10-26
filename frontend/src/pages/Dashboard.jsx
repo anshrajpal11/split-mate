@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "@/lib/api";
 import {
   Card,
   CardContent,
@@ -22,9 +22,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchSummary() {
       try {
-        const res = await axios.get("http://localhost:3000/api/user/summary", {
-          withCredentials: true,
-        });
+        const res = await api.get("/api/user/summary");
         if (res.data?.success) setSummary(res.data.summary);
       } finally {
         setLoading(false);
